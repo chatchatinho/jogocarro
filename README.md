@@ -1,7 +1,8 @@
 # Racha — corrida local para 2 jogadores
 
 Jogo de corrida em tela dividida para duas pessoas no mesmo teclado, feito em
-**Godot 4.3**. Três voltas num circuito fechado; quem cruzar a linha primeiro vence.
+**Godot 4.3**, com visual pixelado estilo 16-bit. Três voltas num circuito fechado;
+quem cruzar a linha primeiro vence.
 
 ## Controles
 
@@ -38,6 +39,8 @@ cena `.tscn` — só existe um `.tscn` mínimo apontando para o script.
 | `scripts/Track.gd` | Gera o circuito: asfalto, faixas, zebras e muros de colisão |
 | `scripts/Input2P.gd` | Teclas dos dois jogadores |
 | `scripts/DebugCapture.gd` | Teste automatizado (só roda com `--shot=`, ver abaixo) |
+| `shaders/retro_palette.gdshader` | Posteriza e dithera as cores — a paleta limitada do visual 16-bit |
+| `assets/fonts/` | Fonte pixelada do HUD (ver `docs/asset-licenses.md`) |
 
 ### Física
 
@@ -58,6 +61,24 @@ que alguém corte caminho.
 
 Se um carro capota, cai ou fica preso no muro por alguns segundos, ele é recolocado
 na pista automaticamente, sem perder a volta.
+
+### Visual 16-bit
+
+A física e a lógica de jogo continuam rodando em resolução total — só a
+**apresentação** é retrô, em três camadas:
+
+1. **Resolução interna baixa.** Cada metade da tela dividida renderiza numa
+   imagem pequena (`Main.PIXEL_RENDER_HEIGHT`, hoje 216 px de altura) que
+   depois é ampliada com filtro **nearest** — cada pixel vira um quadrado
+   sólido em vez de borrar, que é a pixelização propriamente dita.
+2. **Paleta limitada.** Um shader (`shaders/retro_palette.gdshader`) posteriza
+   as cores em faixas e aplica dithering ordenado 4×4, imitando o número
+   pequeno de cores simultâneas de um console 16-bit.
+3. **Materiais chapados.** Sem metálico, sem brilho especular, céu em cor
+   sólida em vez de gradiente — o oposto de um render PBR moderno.
+
+Fonte pixelada (Press Start 2P, licença OFL) no HUD e nos textos de tela — ver
+`docs/asset-licenses.md`.
 
 ## Testes
 

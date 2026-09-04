@@ -78,15 +78,19 @@ func _build_body() -> void:
 	shape.position.y = 0.15
 	add_child(shape)
 
+	# Sem metálico/brilho suave: cor chapada + luz difusa simples é o que lê
+	# como "16-bit", em vez do reflexo contínuo de um render PBR moderno.
 	var paint := StandardMaterial3D.new()
 	paint.albedo_color = car_color
-	paint.metallic = 0.55
-	paint.roughness = 0.32
+	paint.metallic = 0.0
+	paint.roughness = 1.0
+	paint.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 
 	var glass := StandardMaterial3D.new()
-	glass.albedo_color = Color(0.08, 0.11, 0.16)
-	glass.metallic = 0.2
-	glass.roughness = 0.08
+	glass.albedo_color = Color(0.05, 0.08, 0.14)
+	glass.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	glass.metallic = 0.0
+	glass.roughness = 1.0
 
 	# carroceria em duas caixas: corpo + cabine mais estreita, o suficiente para
 	# ler como carro e para o jogador enxergar a direção em que está apontado
@@ -144,7 +148,8 @@ func _build_wheels() -> void:
 
 	var tire := StandardMaterial3D.new()
 	tire.albedo_color = Color(0.07, 0.07, 0.08)
-	tire.roughness = 0.95
+	tire.roughness = 1.0
+	tire.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 
 	for wheel: Dictionary in _wheels:
 		var node := MeshInstance3D.new()

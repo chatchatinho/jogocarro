@@ -86,8 +86,9 @@ func _build_ground() -> void:
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(1200, 1200)
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.34, 0.52, 0.24)
+	mat.albedo_color = Color(0.30, 0.62, 0.22)
 	mat.roughness = 1.0
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	plane.material = mat
 
 	var mi := MeshInstance3D.new()
@@ -109,12 +110,12 @@ func _build_road() -> void:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
-	var asphalt := Color(0.22, 0.22, 0.25)
-	var asphalt_alt := Color(0.20, 0.20, 0.23)
-	var line := Color(0.85, 0.85, 0.85)
-	var kerb_a := Color(0.72, 0.18, 0.14)
-	var kerb_b := Color(0.92, 0.92, 0.92)
-	var start := Color(0.95, 0.95, 0.95)
+	var asphalt := Color(0.26, 0.26, 0.30)
+	var asphalt_alt := Color(0.22, 0.22, 0.26)
+	var line := Color(0.92, 0.92, 0.85)
+	var kerb_a := Color(0.85, 0.14, 0.1)
+	var kerb_b := Color(0.95, 0.95, 0.95)
+	var start := Color(0.97, 0.97, 0.97)
 
 	var hw := ROAD_HALF_WIDTH
 	var lw := 0.25
@@ -164,7 +165,8 @@ func _build_road() -> void:
 
 	var mat := StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
-	mat.roughness = 0.95
+	mat.roughness = 1.0
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	st.set_material(mat)
 
 	var mi := MeshInstance3D.new()
@@ -187,7 +189,8 @@ func _build_walls() -> void:
 	mesh.size = Vector3(WALL_THICKNESS, WALL_HEIGHT, 1.0)
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(0.88, 0.88, 0.9)
-	mat.roughness = 0.8
+	mat.roughness = 1.0
+	mat.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
 	mesh.material = mat
 
 	var wall_offset := ROAD_HALF_WIDTH + KERB_WIDTH + 0.5
